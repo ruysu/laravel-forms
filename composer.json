@@ -1,0 +1,20 @@
+{
+    "name": "ruysu/forms",
+    "description": "Easy form builder",
+    "authors": [
+        {
+            "name": "Gerardo Gómez",
+            "email": "code@gerardo.im"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Ruysu\\Forms": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
