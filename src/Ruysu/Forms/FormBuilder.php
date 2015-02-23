@@ -28,7 +28,7 @@ abstract class FormBuilder implements FormBuilderInterface {
 
 	protected function hasFile() {
 		return $this->fields->filter(function($field) {
-			$field->type() == 'file';
+			return $field->type() == 'file';
 		})->count() > 0;
 	}
 

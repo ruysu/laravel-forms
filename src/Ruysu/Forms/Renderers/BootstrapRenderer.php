@@ -4,10 +4,19 @@ use Ruysu\Forms\FormField;
 
 class BootstrapRenderer implements RendererInterface {
 	public function render(FormField $field, $value = null, array $attributes = array()) {
-		$field->addClass('form-control');
+		if (!in_array($field->type(), ['file', 'radio', 'checkbox'])) {
+			$field->addClass('form-control');
+		}
+
 		$input = $field->getInput($value, $attributes);
 		$label = $field->getLabel(['class' => 'form-label']);
 		$error = $field->getError();
+
+		if (in_array($field->type(), ['radio', 'checkbox'])) {
+			$input = '<div class="' . $type . '"><label>' . $input . e($label) . '</label></div>';
+			$label = '';
+		}
+
 		return '<div class="form-group">' . $label . $input . $error . '</div>';
 	}
 
