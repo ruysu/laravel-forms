@@ -13,7 +13,7 @@ class BootstrapRenderer implements RendererInterface {
 		$error = $field->getError();
 
 		if (in_array($field->type(), ['radio', 'checkbox'])) {
-			$input = '<div class="' . $field->type() . '"><label>' . $input . e($label) . '</label></div>';
+			$input = '<div class="' . $field->type() . '"><label>' . $input . e($field->label()) . '</label></div>';
 			$label = '';
 		}
 
