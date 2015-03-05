@@ -12,12 +12,12 @@ abstract class FormBuilder implements FormBuilderInterface {
 	protected $action;
 	protected $method = 'post';
 	private $renderer;
-	private $booted = false;
 
 	public function __construct(Form $builder, Request $request) {
 		$this->builder = $builder;
 		$this->request = $request;
 		$this->fields = new Collection;
+		$this->boot();
 	}
 
 	public function addField(FormField $field) {
@@ -33,12 +33,8 @@ abstract class FormBuilder implements FormBuilderInterface {
 	}
 
 	public function open(array $attributes = array(), $renderer = null) {
-		if (!$this->booted) {
-			$rendererClass = $this->getRenderer($renderer);
-			$this->renderer = new $rendererClass;
-			$this->boot();
-			$this->booted = true;
-		}
+		$rendererClass = $this->getRenderer($renderer);
+		$this->renderer = new $rendererClass;
 
 		return $this->builder->open(array_merge($attributes, ['method' => $this->method, 'url' => $this->action, 'files' => $this->hasFile()])) . $this->renderer->before();
 	}
@@ -51,8 +47,25 @@ abstract class FormBuilder implements FormBuilderInterface {
 		return $this->fields;
 	}
 
-	public function render(array $attributes = array(), $renderer = null) {
+	public function getInput() {
+		$input = [];
 
+		foreach ($this->fields as $name => $field) {
+			if(in_array($field->type(), ['checkbox', 'radio'])) {
+				$input[$name] = $this->request->has($name);
+			}
+			elseif ($field->type() == 'file') {
+				$input[$name] = $this->request->file($name);
+			}
+			else {
+				$input[$name] = $this->request->get($name);
+			}
+		}
+
+		return $input;
+	}
+
+	public function render(array $attributes = array(), $renderer = null) {
 		$form = $this->open($attributes, $renderer);
 
 		foreach ($this->fields as $key => $field) {

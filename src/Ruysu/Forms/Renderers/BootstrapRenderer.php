@@ -10,14 +10,14 @@ class BootstrapRenderer implements RendererInterface {
 
 		$input = $field->getInput($value, $attributes);
 		$label = $field->getLabel(['class' => 'form-label']);
-		$error = $field->getError();
+		$error = $field->getError(['class' => 'help-block']);
 
 		if (in_array($field->type(), ['radio', 'checkbox'])) {
 			$input = '<div class="' . $field->type() . '"><label>' . $input . e($field->label()) . '</label></div>';
 			$label = '';
 		}
 
-		return '<div class="form-group">' . $label . $input . $error . '</div>';
+		return '<div class="form-group' . ($error ? ' has-error' : '') . '">' . $label . $input . $error . '</div>';
 	}
 
 	public function before() {
