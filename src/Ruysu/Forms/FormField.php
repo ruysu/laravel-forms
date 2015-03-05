@@ -41,7 +41,7 @@ class FormField {
 
 		switch ($type) {
 			case 'select':
-				if (in_array('multiple', array_keys($attributes)) || in_array('multiple', $attributes)) {
+				if (in_array('multiple', array_keys($attributes), true) || in_array('multiple', $attributes), true) {
 					$name .= '[]';
 				}
 
